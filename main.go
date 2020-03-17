@@ -53,7 +53,14 @@ func main() {
 
 	for part := 0; part < parts; part++ {
 		partFileName := fmt.Sprintf("%s-%d", fileName, part)
-		progressBar := pb.New(partLength).Prefix(partFileName)
+
+		total := int64(partLength)
+
+		if part == (parts - 1) {
+			total = contentLength - int64((partLength * part))
+		}
+
+		progressBar := pb.New64(total).Prefix(partFileName)
 
 		task := Task{
 			Part:        part,
